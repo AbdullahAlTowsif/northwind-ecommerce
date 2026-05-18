@@ -9,20 +9,25 @@ import path from "node:path";
 import { clerkMiddleware } from '@clerk/express'
 import { clerkWebhookHandler } from "./webhooks/clerk";
 import { getEnv } from "./lib/env";
+import job from "./lib/cron";
 
 const env = getEnv();
 const app = express();
 
-const rawJson = express.raw({type: "application/json", limit: "1mb"});
+const rawJson = express.raw({ type: "application/json", limit: "1mb" });
 
 // it's important that you don't parse the webhook event data, it should be in the raw format
-app.post("/webhooks/clerk",rawJson, (req: Request, res: Response) => {
-    void clerkWebhookHandler(req, res)
+app.post("/webhooks/clerk", rawJson, (req: Request, res: Response) => {
+  void clerkWebhookHandler(req, res)
 });
 
 app.use(express.json());
 app.use(cors());
 app.use(clerkMiddleware());
+
+app.use("/health", (_req, res) => {
+  res.json({ ok: true })
+})
 
 // Deployment Related
 const publicDir = path.join(process.cwd(), "public")
@@ -44,4 +49,9 @@ if (fs.existsSync(publicDir)) {
   });
 }
 
-app.listen(env.PORT, () => console.log(`Listening to PORT ${env.PORT}`));
+app.listen(env.PORT, () => {
+  console.log(`Listening to PORT ${env.PORT}`)
+  if (env.NODE_ENV === "production") {
+    job.start();
+  }
+});
