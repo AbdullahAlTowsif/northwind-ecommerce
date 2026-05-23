@@ -11,6 +11,10 @@ import { clerkWebhookHandler } from "./webhooks/clerk";
 import { getEnv } from "./lib/env";
 import job from "./lib/cron";
 
+import meRouter from "./routes/meRouter";
+import productRouter from "./routes/productRouter";
+import streamRouter from "./routes/streamRouter";
+
 const env = getEnv();
 const app = express();
 
@@ -28,6 +32,10 @@ app.use(clerkMiddleware());
 app.use("/health", (_req, res) => {
   res.json({ ok: true })
 })
+
+app.use("/api/me", meRouter);
+app.use("/api/products", productRouter);
+app.use("/api/stream", streamRouter);
 
 // Deployment Related
 const publicDir = path.join(process.cwd(), "public")
@@ -48,6 +56,8 @@ if (fs.existsSync(publicDir)) {
     res.sendFile(path.join(publicDir, "index.html"), (err) => next(err));
   });
 }
+
+// TODO: add error handler middleware
 
 app.listen(env.PORT, () => {
   console.log(`Listening to PORT ${env.PORT}`)
