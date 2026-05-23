@@ -32,10 +32,14 @@ export async function createStreamToken(req: Request, res: Response, next: NextF
             localUser.email,
         );
 
-        const image = clerkUser.imageUrl || undefined;
+        const image = clerkUser.imageUrl;
         const sid = streamUserId(userId);
 
-        await server.upsertUser({ id: sid, name, image });
+        await server.upsertUser({
+            id: sid,
+            name,
+            ...(image ? { image } : {}),
+        });
 
         const token = server.createToken(sid);
 
