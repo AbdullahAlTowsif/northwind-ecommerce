@@ -14,6 +14,7 @@ import job from "./lib/cron";
 import meRouter from "./routes/meRouter";
 import productRouter from "./routes/productRouter";
 import streamRouter from "./routes/streamRouter";
+import checkoutRouter from "./routes/checkoutRouter";
 
 const env = getEnv();
 const app = express();
@@ -24,6 +25,10 @@ const rawJson = express.raw({ type: "application/json", limit: "1mb" });
 app.post("/webhooks/clerk", rawJson, (req: Request, res: Response) => {
   void clerkWebhookHandler(req, res)
 });
+
+// app.post("/webhooks/polar", rawJson, (req: Request, res: Response) => {
+//   void polarWebhookHandler(req, res)
+// });
 
 app.use(express.json());
 app.use(cors());
@@ -36,6 +41,7 @@ app.use("/health", (_req, res) => {
 app.use("/api/me", meRouter);
 app.use("/api/products", productRouter);
 app.use("/api/stream", streamRouter);
+app.use("/api/checkout", checkoutRouter);
 
 // Deployment Related
 const publicDir = path.join(process.cwd(), "public")
