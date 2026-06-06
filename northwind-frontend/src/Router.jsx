@@ -5,6 +5,7 @@ import CartPage from "./pages/CartPage";
 import ProtectedRoute from "./RouteCheck/ProtectedRoute";
 import OrdersPage from "./pages/OrdersPage";
 import CheckoutReturnPage from "./pages/CheckoutReturnPage";
+import ProductDetailPage from "./pages/ProductDetailPage";
 
 export const router = createBrowserRouter([
     {
@@ -20,6 +21,10 @@ export const router = createBrowserRouter([
     {
         path: "/cart",
         element: <CartPage />,
+    },
+    {
+        path: "/product/:slug",
+        element: <ProductDetailPage />,
     },
     {
         path: "/orders",
