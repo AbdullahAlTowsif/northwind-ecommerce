@@ -4,6 +4,7 @@ import HomePage from "./pages/HomePage";
 import CartPage from "./pages/CartPage";
 import ProtectedRoute from "./RouteCheck/ProtectedRoute";
 import OrdersPage from "./pages/OrdersPage";
+import CheckoutReturnPage from "./pages/CheckoutReturnPage";
 
 export const router = createBrowserRouter([
     {
@@ -23,5 +24,9 @@ export const router = createBrowserRouter([
     {
         path: "/orders",
         element: <ProtectedRoute><OrdersPage /></ProtectedRoute>,
-    }
+    },
+    {
+        path: "/checkout/return",
+        element: <CheckoutReturnPage />
+    },
 ]);
