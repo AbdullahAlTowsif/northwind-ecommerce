@@ -10,6 +10,8 @@ import { SentryDemoPage } from "./pages/SentryDemoPage";
 import OrderDetailPage from "./pages/OrderDetailPage";
 import OrderSummaryPage from "./pages/OrderSummaryPage";
 import OrderChatPage from "./pages/OrderChatPage";
+import OrderVideoPage from "./pages/OrderVideoPage";
+import AdminProductsPage from "./pages/AdminProductsPage";
 
 export const router = createBrowserRouter([
     {
@@ -35,6 +37,22 @@ export const router = createBrowserRouter([
         element: <ProtectedRoute><OrdersPage /></ProtectedRoute>,
     },
     {
+        path: "/checkout/return",
+        element: <CheckoutReturnPage />
+    },
+    {
+        path: "/demo-sentry",
+        element: <SentryDemoPage />
+    },
+    {
+        path: "/orders/:id/call",
+        element: <ProtectedRoute><OrderVideoPage /></ProtectedRoute>
+    },
+    {
+        path: "/admin",
+        element: <ProtectedRoute><AdminProductsPage /></ProtectedRoute>
+    },
+    {
         path: "/orders/:id",
         element: <OrderDetailPage />,
         children: [
@@ -48,12 +66,4 @@ export const router = createBrowserRouter([
             },
         ],
     },
-    {
-        path: "/checkout/return",
-        element: <CheckoutReturnPage />
-    },
-    {
-        path: "/demo-sentry",
-        element: <SentryDemoPage />
-    }
 ]);
